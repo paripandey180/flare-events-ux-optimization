@@ -1,0 +1,320 @@
+{% comment %} Added by Sanika {% endcomment %}
+
+<section class="homepage-services">
+  <div class="page-width services-wrapper">
+    
+    <h2 class="services-heading">{{ section.settings.heading }}</h2>
+
+    <div class="services-intro">
+      <p>{{ section.settings.intro_text }}</p>
+    </div>
+
+    <div class="services-cards">
+      {% for block in section.blocks %}
+        <div class="service-card" {{ block.shopify_attributes }}>
+          
+          {% if block.settings.icon_image %}
+            <div class="service-icon">
+              {{
+                block.settings.icon_image
+                | image_url: width: 80
+                | image_tag: alt: block.settings.title, loading: 'lazy'
+              }}
+            </div>
+          {% endif %}
+
+          <h3 class="service-card-title">{{ block.settings.title }}</h3>
+
+          <p class="service-card-description">{{ block.settings.description }}</p>
+
+          <ul class="service-card-list">
+            {% if block.settings.bullet_1 != blank %}
+              <li>{{ block.settings.bullet_1 }}</li>
+            {% endif %}
+            {% if block.settings.bullet_2 != blank %}
+              <li>{{ block.settings.bullet_2 }}</li>
+            {% endif %}
+            {% if block.settings.bullet_3 != blank %}
+              <li>{{ block.settings.bullet_3 }}</li>
+            {% endif %}
+          </ul>
+
+          {% if block.settings.button_text != blank %}
+            <a href="{{ block.settings.button_link }}" class="service-card-button">
+              {{ block.settings.button_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .homepage-services {
+    background: #111;
+    padding: 30px 0 100px;
+  }
+
+  
+
+  .services-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .services-heading {
+    text-align: center;
+    color: #d4af37;
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 28px;
+  }
+
+  .services-intro {
+    max-width: 900px;
+    margin: 0 auto 60px;
+    text-align: center;
+  }
+
+  .services-intro p {
+    color: #f2f2f2;
+    font-size: 20px;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .services-cards {
+    display: flex;
+    justify-content: center;
+    gap: 36px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .service-card {
+    background: #000;
+    border: 1.5px solid #d4af37;
+    border-radius: 24px;
+    width: 320px;
+    min-height: 500px;
+    padding: 28px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+
+  .service-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #d4af37;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .service-icon img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+  }
+
+  .service-card-title {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+
+  .service-card-description {
+    color: #d9d9d9;
+    font-size: 16px;
+    line-height: 1.7;
+    margin: 0 0 24px;
+  }
+
+  .service-card-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 28px;
+  }
+
+  .service-card-list li {
+    color: #f3f3f3;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 22px;
+  }
+
+  .service-card-list li::before {
+    content: "✓";
+    color: #d4af37;
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: 700;
+  }
+
+  .service-card-button {
+    margin-top: auto;
+    display: block;
+    text-align: center;
+    border: 1.5px solid #d4af37;
+    color: #d4af37;
+    text-decoration: none;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: 0.2s ease;
+  }
+
+  .service-card-button:hover {
+    background: #d4af37;
+    color: #000;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .services-heading {
+      font-size: 40px;
+    }
+
+    .services-cards {
+      gap: 24px;
+    }
+
+    .service-card {
+      width: calc(50% - 12px);
+      min-width: 280px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .homepage-services {
+      padding: 56px 0 72px;
+    }
+
+    .services-heading {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .services-intro p {
+      font-size: 17px;
+    }
+
+    .services-intro {
+      margin-bottom: 36px;
+    }
+
+    .services-cards {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .service-card {
+      width: 100%;
+      max-width: 360px;
+      min-height: auto;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Homepage Services Cards",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Dating Events | Matchmaking | Dating Coaching"
+    },
+    {
+      "type": "textarea",
+      "id": "intro_text",
+      "label": "Intro Text",
+      "default": "At Flare, we believe meaningful connections start offline. Whether you're meeting new people at our curated singles events, getting personalized introductions through our matchmaking service, or working one-on-one with our dating coaches, every experience is designed to help you find real chemistry without the swipe culture."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "service_card",
+      "name": "Service Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Title",
+          "default": "Dating Events"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Join our carefully curated singles events across Canada. From wine tastings to cooking classes, every event is designed to create natural conversation and genuine connections."
+        },
+        {
+          "type": "text",
+          "id": "bullet_1",
+          "label": "Bullet 1",
+          "default": "Curated guest lists"
+        },
+        {
+          "type": "text",
+          "id": "bullet_2",
+          "label": "Bullet 2",
+          "default": "Unique venues & activities"
+        },
+        {
+          "type": "text",
+          "id": "bullet_3",
+          "label": "Bullet 3",
+          "default": "Professional event hosts"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "View Upcoming Events"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Homepage Services Cards",
+      "blocks": [
+        {
+          "type": "service_card"
+        },
+        {
+          "type": "service_card"
+        },
+        {
+          "type": "service_card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
