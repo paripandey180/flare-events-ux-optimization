@@ -9,3 +9,11 @@ Create a checklist with the following items (if appropriate for your project):
 3. User guide explaining intended usage.
 
 Note: Please remove the checklist when you finish what it needs
+
+# Project Summary
+
+
+# Technical Setup and Requirements
+
+
+# User Guide
