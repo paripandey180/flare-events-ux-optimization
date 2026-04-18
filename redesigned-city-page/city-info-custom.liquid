@@ -1,0 +1,54 @@
+{% comment %} Added by Pari {% endcomment %}
+ 
+{{ 'section-city-info-custom.css' | asset_url | stylesheet_tag }}
+
+<section class="city-about">
+  <div class="page-width about-wrapper">
+    <div class="about-image">
+      {% if section.settings.about_image %}
+        {{ section.settings.about_image | image_url: width: 800 | image_tag: alt: 'City image' }}
+      {% endif %}
+    </div>
+
+    <div class="about-background">
+    </div>
+
+    <div class="about-text">
+      <h2>{{ section.settings.about_heading }}</h2>
+      <p>{{ section.settings.about_text }}</p>
+
+      <a href="/pages/consolidated-events-page" class="btn-dark">
+        About Our Events →
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "City Info Page",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "about_image",
+      "label": "About Section Image"
+    },
+    {
+      "type": "text",
+      "id": "about_heading",
+      "label": "About Heading",
+      "default": "Why Singles Love Our Events"
+    },
+    {
+      "type": "textarea",
+      "id": "about_text",
+      "label": "About Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "City Page Info"
+    }
+  ]
+}
+{% endschema %}

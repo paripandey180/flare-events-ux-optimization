@@ -1,0 +1,65 @@
+{% comment %} Added by Pari {% endcomment %}
+
+{{ 'section-city-hero-custom.css' | asset_url | stylesheet_tag }}
+
+<section class="city-hero">
+  <div class="hero-image" style="background-image: url({{ section.settings.hero_image | image_url: width: 2000 }});">
+    <div class="overlay">
+
+    </div>
+
+    <div class="hero-content page-width">
+      <h1>{{ section.settings.heading }}</h1>
+      <p class="subheading">{{ section.settings.subheading }}</p>
+
+      <div class="hero-buttons">
+        <a href="#events-section" class="btn-hero">
+          View Upcoming Events
+        </a>
+        <a href="/pages/consolidated-events-page#flowchart-process-" class="btn-hero">
+          New to speed dating?
+          <br>
+          Learn how it works →
+        </a>
+      </div>
+    </div>
+
+    <p class="location-note">📍 {{ section.settings.location_note }}</p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "City Hero Page",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "Meet Someone New in Your City"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Curated in-person events"
+    },
+    {
+      "type": "text",
+      "id": "location_note",
+      "label": "Bottom Location Text",
+      "default": "Events in Downtown, Midtown & more"
+    },
+  ],
+  "presets": [
+    {
+      "name": "City Page Hero"
+    }
+  ]
+}
+{% endschema %}

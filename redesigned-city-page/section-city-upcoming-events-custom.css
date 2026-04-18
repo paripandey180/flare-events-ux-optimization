@@ -1,0 +1,486 @@
+/* Added by Pari */
+
+.upcoming-events {
+  background: #000;
+  color: #fff;
+  padding: 72px 20px 80px;
+}
+
+.upcoming-events .page-width {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.events-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.events-header h2 {
+  margin: 0 0 14px;
+  font-size: 2.2rem;
+  line-height: 1.15;
+  font-weight: 700;
+  color: #fff;
+}
+
+.events-subtext p {
+  margin: 4px 0;
+  color: #f3f3f3;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.events-toolbar {
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  padding-top: 18px;
+  margin-bottom: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.toolbar-btn,
+.toolbar-sort {
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  cursor: default;
+}
+
+.toolbar-btn--filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: #f2f2f2;
+  color: #111;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: 600;
+  min-width: 102px;
+  justify-content: space-between;
+}
+
+.toolbar-caret {
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.toolbar-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.toolbar-sort-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Desktop grid */
+.events-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+.event-card {
+  background: transparent;
+  overflow: visible;
+}
+
+.event-card__image-wrap {
+  position: relative;
+  height: 100%;
+  min-height: 340px;
+}
+
+.event-card__image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.event-card__image--placeholder {
+  background: #222;
+  fill: #444;
+}
+
+.event-card__badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  border: 2px solid #b59439;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow:
+    0 0 8px rgba(181, 148, 57, 0.6),
+    0 0 18px rgba(181, 148, 57, 0.4),
+    0 0 28px rgba(181, 148, 57, 0.25);
+  transition: all 0.25s ease;
+}
+
+.event-card__content {
+  padding: 38px 34px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  background: #0b0b0b;
+}
+
+.event-card__meta {
+  margin-bottom: 28px;
+}
+
+.event-card__datetime,
+.event-card__venue {
+  margin: 0;
+  color: #b59439;
+  font-size: 1.15rem;
+  line-height: 1.18;
+  font-weight: 700;
+}
+
+.event-card__title {
+  margin: 0 0 22px;
+  color: #fff;
+  font-size: 2.2rem;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.event-card__details p {
+  margin: 0 0 8px;
+  color: #fff;
+  font-size: 1.2rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.event-card__footer {
+  margin-top: 34px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.event-card__footer-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.event-card__more-info,
+.event-card__back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 18px;
+  border: 1px solid rgba(181, 148, 57, 0.7);
+  background: transparent;
+  color: #b59439;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.event-card__more-info:hover,
+.event-card__back-button:hover {
+  background: rgba(181, 148, 57, 0.12);
+}
+
+.event-card__back-button {
+  margin: 0 auto 18px;
+}
+
+.event-card__button,
+.event-card__button:visited {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  min-width: 210px;
+  padding: 14px 28px;
+  background: #b59439;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: 4px;
+}
+
+.event-card__button--disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.event-card__accessibility {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: #f6f3eb; /* soft off-white */
+  color: #b59439; /* gold icon */
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 2.2rem;
+  line-height: 1;
+
+  border: 4px solid #b59439;  
+}
+
+/* Mobile cards become vertical */
+@media screen and (max-width: 989px) {
+  .upcoming-events {
+    padding: 56px 16px 64px;
+  }
+
+  .events-header h2 {
+    font-size: 1.9rem;
+  }
+
+  .events-subtext p {
+    font-size: 0.98rem;
+  }
+
+  .events-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  .event-card {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .event-card__image-wrap {
+    min-height: 260px;
+  }
+
+  .event-card__content {
+    padding: 22px 18px 20px;
+  }
+
+  .event-card__datetime,
+  .event-card__venue {
+    font-size: 1rem;
+  }
+
+  .event-card__title {
+    font-size: 1.9rem;
+    margin-bottom: 18px;
+  }
+
+  .event-card__details p {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .events-toolbar {
+    margin-bottom: 26px;
+  }
+
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .event-card__image-wrap {
+    min-height: 300px;
+  }
+
+  .event-card__content {
+    padding: 20px 18px 18px;
+  }
+
+  .event-card__badge {
+    top: 12px;
+    right: 12px;
+    min-width: 68px;
+    font-size: 0.85rem;
+    padding: 6px 14px;
+  }
+
+  .event-card__datetime,
+  .event-card__venue {
+    font-size: 0.95rem;
+  }
+
+  .event-card__title {
+    font-size: 1.65rem;
+  }
+
+  .event-card__details p {
+    font-size: 0.98rem;
+  }
+
+  .event-card__footer {
+    margin-top: 22px;
+  }
+
+  .event-card__button,
+  .event-card__button:visited {
+    min-width: 132px;
+    min-height: 42px;
+    padding: 10px 18px;
+    font-size: 0.88rem;
+  }
+
+  .event-card__accessibility {
+    width: 40px;
+    height: 40px;
+    font-size: 1.4rem;
+  }
+}
+
+/* Flip card container */
+.event-flip-card {
+  perspective: 1400px;
+  background: transparent;
+  min-height: 340px;
+}
+
+.event-flip-card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 340px;
+  transition: transform 0.8s ease;
+  transform-style: preserve-3d;
+}
+
+/* Lengthwise flip = rotate on X axis */
+.event-flip-card.is-flipped .event-flip-card__inner {
+  transform: rotateX(180deg);
+}
+
+.event-flip-card__face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  background: #121212;
+}
+
+.event-flip-card__face--front {
+  display: grid;
+  grid-template-columns: 47% 53%;
+}
+
+.event-flip-card__face--back {
+  transform: rotateX(180deg);
+  background: #121212;
+  color: #fff;
+  padding: 28px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-card__back-content {
+  width: 100%;
+  max-width: 100%;
+}
+
+.event-card__back-title {
+  margin: 0 0 18px;
+  font-size: 1.7rem;
+  line-height: 1.15;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+}
+
+.event-card__back-list {
+  display: grid;
+  gap: 10px;
+}
+
+.event-card__back-list p {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: #f3f3f3;
+}
+
+.event-card__back-list strong {
+  color: #b59439;
+  font-weight: 700;
+}
+
+/* Make sure front face content fills card */
+.event-flip-card__face--front .event-card__image-wrap {
+  min-height: 100%;
+  height: 100%;
+}
+
+.event-flip-card__face--front .event-card__content {
+  height: 100%;
+}
+
+/* Mobile layout */
+@media screen and (max-width: 989px) {
+  .event-flip-card,
+  .event-flip-card__inner {
+    min-height: 560px;
+  }
+
+  .event-flip-card__face--front {
+    grid-template-columns: 1fr;
+  }
+
+  .event-flip-card__face--front .event-card__image-wrap {
+    min-height: 260px;
+  }
+
+  .event-flip-card__face--back {
+    padding: 22px 18px;
+    transform: rotateY(180deg);
+  }
+
+  .event-card__back-title {
+    font-size: 1.45rem;
+  }
+
+  .event-card__back-list p {
+    font-size: 0.92rem;
+  }
+
+  .event-flip-card.is-flipped .event-flip-card__inner {
+    transform: rotateY(180deg);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .event-flip-card,
+  .event-flip-card__inner {
+    min-height: 620px;
+  }
+}

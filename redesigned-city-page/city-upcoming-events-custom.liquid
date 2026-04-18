@@ -1,0 +1,378 @@
+{% comment %} Added by Pari {% endcomment %}
+
+{{ 'section-city-upcoming-events-custom.css' | asset_url | stylesheet_tag }}
+
+<section id="events-section" class="upcoming-events section-{{ section.id }}">
+  <div class="page-width">
+    <div class="events-header">
+      <h2>{{ section.settings.heading }}</h2>
+
+      {% if section.settings.subtext_1 != blank or section.settings.subtext_2 != blank %}
+        <div class="events-subtext">
+          {% if section.settings.subtext_1 != blank %}
+            <p>⭐ {{ section.settings.subtext_1 }}</p>
+          {% endif %}
+          {% if section.settings.subtext_2 != blank %}
+            <p>⭐ {{ section.settings.subtext_2 }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="events-toolbar">
+      <button type="button" class="toolbar-btn toolbar-btn--filter" aria-label="Filter">
+        <span>Filter</span>
+        <span class="toolbar-caret">▼</span>
+      </button>
+
+      <button type="button" class="toolbar-sort" aria-label="Sort by">
+        <span>Sort By</span>
+        <span class="toolbar-sort-icon">⇅</span>
+      </button>
+    </div>
+
+    <div class="events-grid">
+      {% for block in section.blocks %}
+        <article class="event-card event-flip-card" {{ block.shopify_attributes }}>
+          <div class="event-flip-card__inner">
+            <!-- Front -->
+            <div class="event-flip-card__face event-flip-card__face--front">
+              <div class="event-card__image-wrap">
+                {% if block.settings.badge != blank %}
+                  <span class="event-card__badge">{{ block.settings.badge }}</span>
+                {% endif %}
+
+                {% if block.settings.image != blank %}
+                  {{
+                    block.settings.image
+                    | image_url: width: 1200
+                    | image_tag: class: 'event-card__image', loading: 'lazy', alt: block.settings.title
+                  }}
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag: 'event-card__image event-card__image--placeholder' }}
+                {% endif %}
+              </div>
+
+              <div class="event-card__content">
+                <div class="event-card__meta">
+                  {% if block.settings.datetime != blank %}
+                    <p class="event-card__datetime">{{ block.settings.datetime }}</p>
+                  {% endif %}
+                  {% if block.settings.venue != blank %}
+                    <p class="event-card__venue">{{ block.settings.venue }}</p>
+                  {% endif %}
+                </div>
+
+                {% if block.settings.title != blank %}
+                  <h3 class="event-card__title">{{ block.settings.title }}</h3>
+                {% endif %}
+
+                <div class="event-card__details">
+                  {% if block.settings.age_range != blank %}
+                    <p>{{ block.settings.age_range }}</p>
+                  {% endif %}
+                  {% if block.settings.early_bird_price != blank %}
+                    <p>{{ block.settings.early_bird_price }}</p>
+                  {% endif %}
+                  {% if block.settings.regular_price != blank %}
+                    <p>{{ block.settings.regular_price }}</p>
+                  {% endif %}
+                </div>
+
+                <div class="event-card__footer">
+                  <div class="event-card__footer-left">
+                    {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+                      <a href="{{ block.settings.button_link }}" class="event-card__button">
+                        {{ block.settings.button_label }}
+                      </a>
+                    {% elsif block.settings.button_label != blank %}
+                      <span class="event-card__button event-card__button--disabled">
+                        {{ block.settings.button_label }}
+                      </span>
+                    {% endif %}
+
+                    <button
+                      type="button"
+                      class="event-card__more-info"
+                      aria-expanded="false"
+                      aria-label="Show more event details"
+                    >
+                      Tap for more info
+                    </button>
+                  </div>
+
+                  {% if block.settings.show_accessibility_icon %}
+                    <span class="event-card__accessibility" aria-label="Accessibility available">♿</span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <!-- Back -->
+            <div class="event-flip-card__face event-flip-card__face--back">
+              <div class="event-card__back-content">
+                <button
+                  type="button"
+                  class="event-card__back-button"
+                  aria-expanded="true"
+                  aria-label="Back to event summary"
+                >
+                  Back
+                </button>
+
+                <h3 class="event-card__back-title">{{ block.settings.title }}</h3>
+
+                <div class="event-card__back-list">
+                  {% if block.settings.event_type != blank %}
+                    <p><strong>Event Type:</strong> {{ block.settings.event_type }}</p>
+                  {% endif %}
+
+                  {% if block.settings.venue_description != blank %}
+                    <p><strong>About the Venue:</strong> {{ block.settings.venue_description }}</p>
+                  {% endif %}
+
+                  {% if block.settings.dress_code != blank %}
+                    <p><strong>Dress Code:</strong> {{ block.settings.dress_code }}</p>
+                  {% endif %}
+
+                  {% if block.settings.event_format != blank %}
+                    <p><strong>Format:</strong> {{ block.settings.event_format }}</p>
+                  {% endif %}
+
+                  {% if block.settings.food_drink_pricing != blank %}
+                    <p><strong>Food & Drink:</strong> {{ block.settings.food_drink_pricing }}</p>
+                  {% endif %}
+
+                  {% if block.settings.parking_transportation != blank %}
+                    <p><strong>Parking / Transit:</strong> {{ block.settings.parking_transportation }}</p>
+                  {% endif %}
+
+                  {% if block.settings.accessibility_features != blank %}
+                    <p><strong>Accessibility:</strong> {{ block.settings.accessibility_features }}</p>
+                  {% endif %}
+
+                  {% if block.settings.host_information != blank %}
+                    <p><strong>Hosted By:</strong> {{ block.settings.host_information }}</p>
+                  {% endif %}
+
+                  {% if block.settings.refund_policy != blank %}
+                    <p><strong>Refunds:</strong> {{ block.settings.refund_policy }}</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const section = document.querySelector('.section-{{ section.id }}');
+    if (!section) return;
+
+    const cards = section.querySelectorAll('.event-flip-card');
+
+    cards.forEach((card) => {
+      const openBtn = card.querySelector('.event-card__more-info');
+      const closeBtn = card.querySelector('.event-card__back-button');
+
+      if (openBtn) {
+        openBtn.addEventListener('click', function (event) {
+          event.preventDefault();
+          card.classList.add('is-flipped');
+          openBtn.setAttribute('aria-expanded', 'true');
+        });
+      }
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function (event) {
+          event.preventDefault();
+          card.classList.remove('is-flipped');
+          if (openBtn) {
+            openBtn.setAttribute('aria-expanded', 'false');
+            openBtn.focus();
+          }
+        });
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Upcoming events",
+  "tag": "section",
+  "class": "section-upcoming-events",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Upcoming Speed Dating Events in Toronto"
+    },
+    {
+      "type": "text",
+      "id": "subtext_1",
+      "label": "Subtext line 1",
+      "default": "As featured in Toronto Life, Toronto Star, and BlogTO"
+    },
+    {
+      "type": "text",
+      "id": "subtext_2",
+      "label": "Subtext line 2",
+      "default": "Over 10,000 conversations started in Toronto"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "event",
+      "name": "Event card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Event image"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge",
+          "default": "New!"
+        },
+        {
+          "type": "text",
+          "id": "datetime",
+          "label": "Date and time",
+          "default": "Thu, Apr 30 • 7:00 PM - 10:00 PM"
+        },
+        {
+          "type": "text",
+          "id": "venue",
+          "label": "Venue",
+          "default": "The Alembic Stillhouse – 180 Cooper Street, Ottawa"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Event title",
+          "default": "Straight Speed Dating"
+        },
+        {
+          "type": "text",
+          "id": "age_range",
+          "label": "Age range",
+          "default": "Ages 34 - 43"
+        },
+        {
+          "type": "text",
+          "id": "early_bird_price",
+          "label": "Early bird price",
+          "default": "Early Bird Admission | $40"
+        },
+        {
+          "type": "text",
+          "id": "regular_price",
+          "label": "Regular price",
+          "default": "Regular Admission | $45"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Book Your Spot"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_accessibility_icon",
+          "label": "Show accessibility icon",
+          "default": true
+        },
+        {
+          "type": "textarea",
+          "id": "venue_description",
+          "label": "Venue Description",
+          "default": "Located in Ottawa, The Alembic Stillhouse offers an intimate setting for curated singles events."
+        },
+        {
+          "type": "text",
+          "id": "food_drink_pricing",
+          "label": "Food & Drink Pricing",
+          "default": "Drinks available for purchase at the venue."
+        },
+        {
+          "type": "text",
+          "id": "accessibility_features",
+          "label": "Accessibility Features",
+          "default": "Venue accessibility available."
+        },
+        {
+          "type": "text",
+          "id": "dress_code",
+          "label": "Dress Code",
+          "default": "Dress to impress."
+        },
+        {
+          "type": "text",
+          "id": "event_format",
+          "label": "Event Format",
+          "default": "Icebreaker game followed by 8-minute speed dating rounds."
+        },
+        {
+          "type": "text",
+          "id": "parking_transportation",
+          "label": "Parking / Transportation",
+          "default": "Street parking and nearby transit options available."
+        },
+        {
+          "type": "text",
+          "id": "host_information",
+          "label": "Host Information",
+          "default": "Hosted by Flare Events."
+        },
+        {
+          "type": "text",
+          "id": "event_type",
+          "label": "Event Type",
+          "default": "In-person speed dating"
+        },
+        {
+          "type": "text",
+          "id": "gender_ratio_capacity",
+          "label": "Gender Ratio / Capacity"
+        },
+        {
+          "type": "text",
+          "id": "refund_policy",
+          "label": "Refund Policy",
+          "default": "No refunds."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    {
+      "name": "Upcoming events",
+      "blocks": [
+        {
+          "type": "event"
+        },
+        {
+          "type": "event"
+        },
+        {
+          "type": "event"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

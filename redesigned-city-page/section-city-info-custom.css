@@ -1,0 +1,142 @@
+/* Added by Pari */
+
+.city-about {
+  background: #b59439;
+  width: 100%;
+  padding: 70px 0;
+  position: relative;
+}
+
+.about-wrapper {
+  max-width: 1350px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 90px;
+  padding: 0 40px;
+}
+
+.about-image {
+  flex: 0 0 390px;
+}
+
+.about-image img {
+  width: 390px;
+  height: 580px;
+  object-fit: cover;
+  display: block;
+}
+
+.about-text {
+  flex: 0 1 620px;
+  max-width: 620px;
+  color: #fff;
+}
+
+.about-text h2 {
+  font-size: 30px;
+  line-height: 1.25;
+  margin: 0 0 34px;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.about-text p {
+  font-size: 18px;
+  line-height: 1.85;
+  margin: 0;
+  opacity: 1;
+  font-weight: 500;
+  font-style: italic;
+  max-width: 600px;
+}
+
+.btn-dark {
+  display: inline-block;
+  margin-top: 36px;
+  background: #000;
+  color: #fff;
+  padding: 14px 38px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+@media (max-width: 990px) {
+  .city-about {
+    padding: 50px 0;
+  }
+
+  .about-wrapper {
+    gap: 40px;
+    padding: 0 24px;
+  }
+
+  .about-image {
+    flex-basis: 320px;
+  }
+
+  .about-image img {
+    width: 320px;
+    height: 460px;
+  }
+
+  .about-text {
+    max-width: 520px;
+  }
+
+  .about-text h2 {
+    font-size: 26px;
+    margin-bottom: 22px;
+  }
+
+  .about-text p {
+    font-size: 17px;
+    line-height: 1.7;
+  }
+}
+
+@media (max-width: 768px) {
+  .city-about {
+    padding: 32px 0;
+  }
+
+  .about-wrapper {
+    flex-direction: column;
+    text-align: center;
+    gap: 18px;
+    padding: 0 16px;
+  }
+
+  .about-image,
+  .about-text {
+    flex: none;
+    max-width: 100%;
+  }
+
+  .about-image img {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .about-text h2 {
+    font-size: 22px;
+    margin: 0 0 10px;
+  }
+
+  .about-text p {
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .btn-dark {
+    margin-top: 22px;
+    font-size: 15px;
+  }
+}
