@@ -1,0 +1,319 @@
+{% schema %}
+  {
+    "name": "Homepage Hero",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title_line1",
+        "label": "Hero Title Line 1",
+        "default": "Real Connections."
+      },
+      {
+        "type": "text",
+        "id": "title_line2",
+        "label": "Hero Title Line 2 (Gold)",
+        "default": "Made in Canada."
+      },
+      {
+        "type": "text",
+        "id": "desc",
+        "label": "Hero Description",
+        "default": "We bring singles together through curated events and personalized matchmaking that spark genuine chemistry, no swiping required."
+      },
+      {
+        "type": "text",
+        "id": "cta_text",
+        "label": "CTA Button Text",
+        "default": "Find Events Near You"
+      },
+      {
+        "type": "url",
+        "id": "cta_url",
+        "label": "CTA Button URL"
+      },
+      {
+        "type": "text",
+        "id": "stat1_number",
+        "label": "Stat 1 Number",
+        "default": "30+"
+      },
+      {
+        "type": "text",
+        "id": "stat1_label",
+        "label": "Stat 1 Label",
+        "default": "Events Monthly"
+      },
+      {
+        "type": "text",
+        "id": "stat2_number",
+        "label": "Stat 2 Number",
+        "default": "8"
+      },
+      {
+        "type": "text",
+        "id": "stat2_label",
+        "label": "Stat 2 Label",
+        "default": "Cities"
+      },
+      {
+        "type": "text",
+        "id": "stat3_number",
+        "label": "Stat 3 Number",
+        "default": "200+"
+      },
+      {
+        "type": "text",
+        "id": "stat3_label",
+        "label": "Stat 3 Label",
+        "default": "Success Stories"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Homepage - Hero"
+      }
+    ]
+  }
+{% endschema %}
+
+<section class="hp-hero-section" role="banner" aria-label="Homepage Hero" itemscope itemtype="https://schema.org/Service">
+
+  <div class="hero-bg-orb" aria-hidden="true"></div>
+
+  <div class="hp-hero-inner">
+
+    <!-- LEFT COLUMN -->
+    <div class="hp-hero-left">
+      <h1 class="hp-hero-title">
+        <span class="title-white">{{ section.settings.title_line1 | default: 'Real Connections.' }}</span>
+        <span class="title-gold">{{ section.settings.title_line2 | default: 'Made in Canada.' }}</span>
+      </h1>
+
+      <p class="hp-hero-desc">
+        {{ section.settings.desc | default: 'We bring singles together through curated events and personalized matchmaking that spark genuine chemistry, no swiping required.' }}
+      </p>
+
+      <a href="{{ section.settings.cta_url | default: '#' }}" class="hp-hero-cta">
+        {{ section.settings.cta_text | default: 'Find Events Near You' }}
+      </a>
+
+      <div class="hp-hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">{{ section.settings.stat1_number | default: '30+' }}</span>
+          <span class="stat-label">{{ section.settings.stat1_label | default: 'Events Monthly' }}</span>
+        </div>
+        <div class="stat-divider" aria-hidden="true"></div>
+        <div class="stat-item">
+          <span class="stat-number">{{ section.settings.stat2_number | default: '8' }}</span>
+          <span class="stat-label">{{ section.settings.stat2_label | default: 'Cities' }}</span>
+        </div>
+        <div class="stat-divider" aria-hidden="true"></div>
+        <div class="stat-item">
+          <span class="stat-number stat-number--gold">{{ section.settings.stat3_number | default: '200+' }}</span>
+          <span class="stat-label">{{ section.settings.stat3_label | default: 'Success Stories' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: 2x2 Photo Grid -->
+    <div class="hp-hero-right" aria-hidden="true">
+      <div class="photo-grid">
+        <div class="photo-cell photo-cell--tl">
+          <img src="https://cdn.shopify.com/s/files/1/0855/3709/5995/files/dating-coaching-toronto_2.jpg"
+               alt="Couple enjoying a date" loading="lazy">
+        </div>
+        <div class="photo-cell photo-cell--tr">
+          <img src="https://cdn.shopify.com/s/files/1/0855/3709/5995/files/matchmaking-services_292935ac-1ce7-461a-b727-6cf726df046d.jpg"
+               alt="Romantic dinner" loading="lazy">
+        </div>
+        <div class="photo-cell photo-cell--bl">
+          <img src="https://cdn.shopify.com/s/files/1/0855/3709/5995/files/speed-dating-canada.jpg"
+               alt="Speed dating event" loading="lazy">
+        </div>
+        <div class="photo-cell photo-cell--br">
+          <img src="https://cdn.shopify.com/s/files/1/0855/3709/5995/files/dating-coaching-toronto_2.jpg"
+               alt="Happy couple" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <meta itemprop="provider" content="Flare Events">
+  <meta itemprop="serviceType" content="Matchmaking &amp; Dating Events">
+  <meta itemprop="areaServed" content="Toronto, Ottawa, Montréal, Winnipeg, Calgary, Vancouver, Canada">
+</section>
+
+<style>
+  .hp-hero-section *,
+  .hp-hero-section *::before,
+  .hp-hero-section *::after {
+    box-sizing: border-box;
+  }
+
+  .hp-hero-section {
+    position: relative;
+    width: 100%;
+    background-color: #0d0d0d;
+    overflow: hidden;
+    padding: 5rem 4rem 4rem;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  .hero-bg-orb {
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,175,55,0.18) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hp-hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .hp-hero-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .hp-hero-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15em;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 800;
+    line-height: 1.05;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  .title-white { color: #ffffff; }
+  .title-gold  { color: #c9a227; }
+
+  .hp-hero-desc {
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    line-height: 1.65;
+    color: #b0b0b0;
+    max-width: 520px;
+    margin: 0;
+  }
+
+  .hp-hero-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 0.9rem 2rem;
+    background: #c9a227;
+    color: #1a1200;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 50px;
+    letter-spacing: 0.01em;
+    transition: background 0.25s ease, transform 0.2s ease;
+  }
+
+  .hp-hero-cta:hover {
+    background: #e0b830;
+    transform: translateY(-2px);
+  }
+
+  .hp-hero-stats {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .stat-number {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
+  }
+
+  .stat-number--gold { color: #c9a227; }
+
+  .stat-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 36px;
+    background: rgba(255,255,255,0.15);
+    flex-shrink: 0;
+  }
+
+  .hp-hero-right { position: relative; }
+
+  .photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .photo-cell {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid rgba(201,162,39,0.25);
+    background: #1a1a1a;
+  }
+
+  .photo-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .photo-cell:hover img { transform: scale(1.04); }
+
+  .photo-cell--tl { height: 220px; }
+  .photo-cell--tr { height: 180px; margin-top: 2rem; }
+  .photo-cell--bl { height: 180px; }
+  .photo-cell--br { height: 220px; margin-top: -2rem; }
+
+  @media (max-width: 900px) {
+    .hp-hero-section { padding: 3.5rem 1.5rem 3rem; }
+    .hp-hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hp-hero-right { order: -1; }
+    .photo-cell--tl,
+    .photo-cell--tr,
+    .photo-cell--bl,
+    .photo-cell--br { height: 160px; margin-top: 0; }
+    .hp-hero-title { font-size: clamp(2.2rem, 8vw, 3rem); }
+  }
+
+  @media (max-width: 480px) {
+    .hp-hero-stats { flex-wrap: wrap; gap: 1rem; }
+    .stat-divider { display: none; }
+  }
+</style>
