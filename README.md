@@ -1,19 +1,7 @@
-# flare-events-ux-optimization
-Flare Events Inc. - Cross-Platform UX Optimization: Improving Navigation and Conversion for Flare Events' Websites
-
-# What to put
-Create a checklist with the following items (if appropriate for your project):
-
-1. A brief summary of the project and its intended use.
-2. Installation instructions and technical documentation on how to run any code, and/or versioning of any libraries used to replicate your setup.
-3. User guide explaining intended usage.
-
-Note: Please remove the checklist when you finish what it needs
-
 # Project Summary
+The Flare Events Inc. - Cross-Platform UX Optimization: Improving Navigation and Conversion for Flare Events' Websites is an Arizona State University capstone project, focusing on UX/UI design, where the goal is to improve navigation and redesign Flare Events' WordPress and Shopify pages. The team uses competitive analysis research on different websites before moving to Figma to redesign and prototype the homepage, city pages, and the new consolidated events page. New features for the redesigned website include functional, flipped event cards and filter and sort-by dropdowns. Once finished, the team moves into Shopify to create the redesigned pages based on the Figma design, using Shopify Liquid. The Shopify Liquid code created by the team is stored in this repository, including the redesigned city and home pages, and the new consolidated events page.
 
-
-# Technical Setup and Requirements
+# Installation Instructions and Technical Documentation
 ## Architecture diagrams of the system
 The system is built on the Shopify theme architecture, where the frontend is structured using a combination of Liquid templates, sections, and snippets. The homepage and other pages are made up of reusable components or sections that render dynamic content using Liquid. CSS is used to handle styling and layout, while JavaScript is used for minor interactivity such as hover effects and dynamic behaviors.
 
