@@ -1,0 +1,48 @@
+{% comment %} Added by Pari {% endcomment %}
+
+{{ 'section-cep-hero-custom.css' | asset_url | stylesheet_tag }}
+
+<section class="cep-hero">
+  <div class="hero-image" style="background-image: url({{ section.settings.hero_image | image_url: width: 2000 }});">
+    <div class="overlay"></div>
+    <div class="hero-content page-width">
+      <h1>{{ section.settings.heading }}</h1>
+      <p class="subheading">
+        {{ section.settings.subheading }}
+      </p>
+      <div class="hero-buttons">
+        <a href="#events-section" class="btn-hero"> See Events Near You → </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Consolidate Events Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "Modern Speed Dating Across Canada - Meet Someone New Tonight"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Our curated speed dating events bring together singles looking for real conversation, in beautiful venues, with thoughtful hosting, and an atmosphere designed to make everyone comfortable."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Consolidate Events Hero"
+    }
+  ]
+}
+{% endschema %}
