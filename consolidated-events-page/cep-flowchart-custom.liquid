@@ -1,0 +1,556 @@
+{% assign section_id = 'flowchart-process-' | append: section.id %}
+
+<section id="{{ section_id }}" class="fcp-section">
+  <div class="fcp-bg-wrap">
+    {% if section.settings.background_image != blank %}
+      {{
+        section.settings.background_image
+        | image_url: width: 2400
+        | image_tag:
+          class: 'fcp-bg-image',
+          loading: 'lazy',
+          widths: '600, 900, 1200, 1600, 2000, 2400',
+          sizes: '100vw',
+          alt: section.settings.heading | escape
+      }}
+    {% else %}
+      <div class="fcp-bg-placeholder"></div>
+    {% endif %}
+    <div class="fcp-overlay"></div>
+  </div>
+
+  <div class="fcp-inner page-width">
+    {% if section.settings.heading != blank %}
+      <div class="fcp-header">
+        <h2 class="fcp-heading">{{ section.settings.heading }}</h2>
+      </div>
+    {% endif %}
+
+    <div class="fcp-stage">
+      <div class="fcp-line fcp-line--1" aria-hidden="true">
+        <svg viewBox="0 0 240 392" preserveAspectRatio="none">
+          <path d="M210 0 C125 0, 62 55, 62 128 L62 374" />
+        </svg>
+      </div>
+
+      <div class="fcp-line fcp-line--2" aria-hidden="true">
+        <svg viewBox="0 0 320 438" preserveAspectRatio="none">
+          <path d="M24 0 C168 0, 226 78, 226 170 L226 423" />
+        </svg>
+      </div>
+
+      <div class="fcp-line fcp-line--3" aria-hidden="true">
+        <svg viewBox="0 0 220 314" preserveAspectRatio="none">
+          <path d="M170 0 C92 0, 54 42, 54 100 L54 300" />
+        </svg>
+      </div>
+
+      {% for block in section.blocks %}
+        <div
+          class="fcp-card fcp-card--{{ forloop.index }}"
+          {{ block.shopify_attributes }}
+          style="
+            --desktop-top: {{ block.settings.desktop_top }}%;
+            --desktop-left: {{ block.settings.desktop_left }}%;
+            --desktop-width: {{ block.settings.desktop_width }}%;
+            --mobile-top: {{ block.settings.mobile_top }}%;
+            --mobile-left: {{ block.settings.mobile_left }}%;
+            --mobile-width: {{ block.settings.mobile_width }}%;
+          "
+        >
+          <div class="fcp-card__inner">
+            <h3 class="fcp-card__title">{{ block.settings.title }}</h3>
+            <div class="fcp-card__text">{{ block.settings.text }}</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <style>
+    #{{ section_id }} {
+      --fcp-section-height: {{ section.settings.section_height_desktop }}px;
+      --fcp-section-height-mobile: {{ section.settings.section_height_mobile }}px;
+      --fcp-overlay-opacity: {{ section.settings.overlay_opacity | times: 0.01 }};
+      --fcp-card-bg: {{ section.settings.card_bg }};
+      --fcp-card-text: {{ section.settings.card_text }};
+      --fcp-heading-color: {{ section.settings.heading_color }};
+      --fcp-dash-color: {{ section.settings.dash_color }};
+      --fcp-card-radius: {{ section.settings.card_radius }}px;
+      --fcp-card-padding-y: {{ section.settings.card_padding_y }}px;
+      --fcp-card-padding-x: {{ section.settings.card_padding_x }}px;
+      --fcp-max-width: {{ section.settings.content_max_width }}px;
+      position: relative;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #{{ section_id }} .fcp-bg-wrap,
+    #{{ section_id }} .fcp-bg-image,
+    #{{ section_id }} .fcp-bg-placeholder,
+    #{{ section_id }} .fcp-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #{{ section_id }} .fcp-bg-image,
+    #{{ section_id }} .fcp-bg-placeholder {
+      display: block;
+      object-fit: cover;
+    }
+
+    #{{ section_id }} .fcp-bg-placeholder {
+      background:
+        linear-gradient(rgba(0,0,0,.18), rgba(0,0,0,.18)),
+        radial-gradient(circle at 20% 20%, rgba(255,170,120,.28), transparent 30%),
+        radial-gradient(circle at 80% 30%, rgba(255,120,80,.16), transparent 28%),
+        linear-gradient(135deg, #2c1a10 0%, #1b120d 45%, #120d0b 100%);
+    }
+
+    #{{ section_id }} .fcp-overlay {
+      background: rgba(0, 0, 0, var(--fcp-overlay-opacity));
+      z-index: 1;
+    }
+
+    #{{ section_id }} .fcp-inner {
+      position: relative;
+      z-index: 2;
+      min-height: var(--fcp-section-height);
+      max-width: var(--fcp-max-width);
+      margin: 0 auto;
+      padding-top: 26px;
+      padding-bottom: 44px;
+    }
+
+    #{{ section_id }} .fcp-header {
+      text-align: center;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 4;
+    }
+
+    #{{ section_id }} .fcp-heading {
+      margin: 0;
+      color: var(--fcp-heading-color);
+      font-size: clamp(28px, 3vw, 44px);
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    #{{ section_id }} .fcp-stage {
+      position: relative;
+      min-height: calc(var(--fcp-section-height) - 80px);
+    }
+
+    #{{ section_id }} .fcp-line {
+      position: absolute;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    #{{ section_id }} .fcp-line svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    #{{ section_id }} .fcp-line path {
+      fill: none;
+      stroke: var(--fcp-dash-color);
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 16 18;
+      opacity: 0.98;
+    }
+
+    #{{ section_id }} .fcp-line--1 {
+      top: 14.2%;
+      left: 38%;
+      width: 17%;
+      height: 27%;
+    }
+
+    #{{ section_id }} .fcp-line--2 {
+      top: 44.5%;
+      left: 43%;
+      width: 22%;
+      height: 24%;
+    }
+
+    #{{ section_id }} .fcp-line--3 {
+      top: 71.4%;
+      left: 39%;
+      width: 17%;
+      height: 20.5%;
+    }
+
+    #{{ section_id }} .fcp-card {
+      position: absolute;
+      top: var(--desktop-top);
+      left: var(--desktop-left);
+      width: var(--desktop-width);
+      transform: translate(-50%, -50%);
+      z-index: 3;
+    }
+
+    #{{ section_id }} .fcp-card__inner {
+      background: var(--fcp-card-bg);
+      color: var(--fcp-card-text);
+      border-radius: var(--fcp-card-radius);
+      padding: var(--fcp-card-padding-y) var(--fcp-card-padding-x);
+      text-align: center;
+      box-shadow: none;
+    }
+
+    #{{ section_id }} .fcp-card__title {
+      margin: 0 0 14px;
+      font-size: clamp(22px, 1.8vw, 36px);
+      line-height: 1.25;
+      font-weight: 700;
+      color: var(--fcp-card-text);
+    }
+
+    #{{ section_id }} .fcp-card__text,
+    #{{ section_id }} .fcp-card__text p {
+      margin: 0;
+      font-size: clamp(17px, 1.25vw, 22px);
+      line-height: 1.9;
+      color: var(--fcp-card-text);
+    }
+
+    #{{ section_id }} .fcp-card__text p + p {
+      margin-top: 10px;
+    }
+
+    @media screen and (max-width: 989px) {
+      #{{ section_id }} .fcp-inner {
+        min-height: var(--fcp-section-height-mobile);
+        padding-top: 22px;
+        padding-bottom: 28px;
+      }
+
+      #{{ section_id }} .fcp-header {
+        margin-bottom: 18px;
+      }
+
+      #{{ section_id }} .fcp-stage {
+        min-height: calc(var(--fcp-section-height-mobile) - 70px);
+      }
+
+      #{{ section_id }} .fcp-card {
+        top: var(--mobile-top);
+        left: var(--mobile-left);
+        width: var(--mobile-width);
+      }
+
+      #{{ section_id }} .fcp-card__inner {
+        padding: 26px 22px;
+        border-radius: 22px;
+      }
+
+      #{{ section_id }} .fcp-card__title {
+        margin: 0 0 10px;
+        font-size: clamp(20px, 5vw, 28px);
+      }
+
+      #{{ section_id }} .fcp-card__text,
+      #{{ section_id }} .fcp-card__text p {
+        font-size: clamp(15px, 4vw, 18px);
+        line-height: 1.75;
+      }
+
+      #{{ section_id }} .fcp-line path {
+        stroke-width: 7;
+        stroke-dasharray: 16 16;
+      }
+
+      #{{ section_id }} .fcp-line--1 {
+        top: 16.8%;
+        left: 33%;
+        width: 20%;
+        height: 18.8%;
+      }
+
+      #{{ section_id }} .fcp-line--2 {
+        top: 42.7%;
+        left: 42%;
+        width: 22%;
+        height: 24.8%;
+      }
+
+      #{{ section_id }} .fcp-line--3 {
+        top: 69.6%;
+        left: 34%;
+        width: 19%;
+        height: 18.6%;
+      }
+    }
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "Flowchart Process",
+  "tag": "section",
+  "class": "section section-flowchart-background-process",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "How Speed Dating Works?"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "section_height_desktop",
+      "label": "Section height (desktop)",
+      "min": 700,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "section_height_mobile",
+      "label": "Section height (mobile)",
+      "min": 900,
+      "max": 2200,
+      "step": 20,
+      "unit": "px",
+      "default": 1500
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content max width",
+      "min": 1000,
+      "max": 2200,
+      "step": 20,
+      "unit": "px",
+      "default": 1600
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background",
+      "default": "#f2f2f2"
+    },
+    {
+      "type": "color",
+      "id": "card_text",
+      "label": "Card text color",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "dash_color",
+      "label": "Dotted line color",
+      "default": "#ececec"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_padding_y",
+      "label": "Card vertical padding",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "card_padding_x",
+      "label": "Card horizontal padding",
+      "min": 20,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 42
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Step title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add your step description here.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Desktop position"
+        },
+        {
+          "type": "range",
+          "id": "desktop_top",
+          "label": "Desktop top",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "unit": "%",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "desktop_left",
+          "label": "Desktop left",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "unit": "%",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "desktop_width",
+          "label": "Desktop width",
+          "min": 18,
+          "max": 60,
+          "step": 1,
+          "unit": "%",
+          "default": 34
+        },
+        {
+          "type": "header",
+          "content": "Mobile position"
+        },
+        {
+          "type": "range",
+          "id": "mobile_top",
+          "label": "Mobile top",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "unit": "%",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "mobile_left",
+          "label": "Mobile left",
+          "min": 10,
+          "max": 90,
+          "step": 1,
+          "unit": "%",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "mobile_width",
+          "label": "Mobile width",
+          "min": 60,
+          "max": 96,
+          "step": 1,
+          "unit": "%",
+          "default": 86
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Flowchart Process",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "title": "Arrive & Warm Up",
+            "text": "<p>Once everyone is checked in, we start the night with a fun icebreaker&mdash;maybe trivia, 'Two Truths and a Lie,' or another game designed to loosen everyone up. Every event has its own vibe.</p>",
+            "desktop_top": 16,
+            "desktop_left": 72,
+            "desktop_width": 38,
+            "mobile_top": 18,
+            "mobile_left": 50,
+            "mobile_width": 88
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Scorecard Time",
+            "text": "<p>Write your dater's name and mark yes/no after each mini-date. At the end of the night, hand your card to the host.</p>",
+            "desktop_top": 41,
+            "desktop_left": 27,
+            "desktop_width": 38,
+            "mobile_top": 41,
+            "mobile_left": 50,
+            "mobile_width": 88
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Let's Start the Dates",
+            "text": "<p>You'll sit across from a potential match for about 8 minutes. Talk, laugh, keep it light&mdash;you set the tone. When time's up, the host will guide the rotation.</p>",
+            "desktop_top": 66,
+            "desktop_left": 71,
+            "desktop_width": 38,
+            "mobile_top": 64,
+            "mobile_left": 50,
+            "mobile_width": 88
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "After the Event",
+            "text": "<p>Stick around for a drink, mingle, or chat more with people you connected with. Within 48 hours, we'll email you your matches.</p>",
+            "desktop_top": 90,
+            "desktop_left": 27,
+            "desktop_width": 38,
+            "mobile_top": 87,
+            "mobile_left": 50,
+            "mobile_width": 88
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
