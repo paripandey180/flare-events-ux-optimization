@@ -1,0 +1,1287 @@
+{% assign section_id = 'cep-all-events-' | append: section.id %}
+
+<section id="{{ section_id }}" class="cep-events-section">
+  <div class="cep-floating-particles" aria-hidden="true" role="presentation">
+    <div class="cep-particle">&nbsp;</div>
+    <div class="cep-particle">&nbsp;</div>
+    <div class="cep-particle">&nbsp;</div>
+    <div class="cep-particle">&nbsp;</div>
+    <div class="cep-particle">&nbsp;</div>
+    <div class="cep-particle">&nbsp;</div>
+    <div class="cep-particle">&nbsp;</div>
+    <div class="cep-particle">&nbsp;</div>
+    <div class="cep-particle">&nbsp;</div>
+  </div>
+
+{% comment %} Added by Annie {% endcomment %}
+  <div class="cep-events-section__inner page-width">
+    <div id="cep-all-events" class="cep-events-section__header">
+      {% if section.settings.heading != blank %}
+        <h2 class="cep-events-section__title">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      <div class="cep-events-section__header-left">
+        {% if section.settings.show_sortby_placeholder %}
+          <div class="cep-events-sortby">
+            <span class="cep-events-sortby__label">{{ section.settings.sortby_label }}</span>
+            <select class="cep-events-sortby__select" id="cep-sort-select" aria-hidden="{{ section.settings.sortby_label }}">
+              <option value="latest">Latest First</option>
+              <option value="soonest">Soonest First</option>
+            </select>
+            <svg class="cep-events-sortby__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M5 7.5L10 12.5L15 7.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        {% endif %}
+      </div>
+
+{% comment %} Added by Annie {% endcomment %}
+      <div class="cep-events-section__header-right">
+        {% if section.settings.show_filter_placeholder %}
+          <div class="cep-events-filter" id="cep-filter-toggle">
+            <span class="cep-events-filter__label">{{ section.settings.filter_label }}</span>
+            <span class="cep-events-filter__value" id="cep-filter-summary">All</span>
+            <svg class="cep-events-filter__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M5 7.5L10 12.5L15 7.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="cep-filter-panel" id="cep-filter-panel" hidden>
+            <div class="cep-filter-panel__inner">
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    {% assign city_blocks = section.blocks | where: 'type', 'city' %}
+    {% if city_blocks.size > 0 %}
+      <div class="cep-city-grid" role="list">
+        {% for block in city_blocks %}
+          <div class="cep-city-grid__item" role="listitem" {{ block.shopify_attributes }}>
+            {% assign city_image_url = '' %}
+            {% if block.settings.city_image != blank %}
+              {% assign city_image_url = block.settings.city_image | image_url: width: 1200 %}
+            {% endif %}
+
+            {% if block.settings.link != blank %}
+              <a
+                href="{{ block.settings.link }}"
+                class="cep-city-pill{% if block.settings.city_image != blank %} cep-city-pill--has-image{% endif %}"
+                {% if block.settings.city_image != blank %}style="--cep-city-image: url('{{ city_image_url }}');"{% endif %}
+              >
+            {% else %}
+              <button
+                type="button"
+                class="cep-city-pill{% if block.settings.city_image != blank %} cep-city-pill--has-image{% endif %}"
+                {% if block.settings.city_image != blank %}style="--cep-city-image: url('{{ city_image_url }}');"{% endif %}
+              >
+            {% endif %}
+                {% if section.settings.show_city_icon %}
+                  <span class="cep-city-pill__icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M12 21s6-5.686 6-11a6 6 0 10-12 0c0 5.314 6 11 6 11z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle cx="12" cy="10" r="2.4" fill="currentColor"/>
+                    </svg>
+                  </span>
+                {% endif %}
+                <span class="cep-city-pill__text">{{ block.settings.city_name }}</span>
+            {% if block.settings.link != blank %}
+              </a>
+            {% else %}
+              </button>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% assign event_blocks = section.blocks | where: 'type', 'event' %}
+
+    {% assign all_cities = "" %}
+    {% assign all_ages = "" %}
+    {% assign all_times = "" %}
+
+    {% for block in event_blocks %}
+      {% if block.settings.city != blank %}
+        {% assign all_cities = all_cities | append: block.settings.city | append: ',' %}
+      {% endif %}
+      {% if block.settings.age_range != blank %}
+        {% assign all_ages = all_ages | append: block.settings.all_ages | append: ',' %}
+      {% endif %}
+      {% if block.settings.city != blank %}
+        {% assign all_times = all_times | append: block.settings.all_times | append: ',' %}
+      {% endif %}
+    {% endfor %}
+
+    {% assign all_cities = all_cities | split: ',' | uniq | sort %}
+    {% assign all_ages = all_ages | split: ',' | uniq | sort %}
+    {% assign all_times = all_times | split: ',' | uniq | sort %}
+
+    {% if section.settings.show_event_area %}
+      <div class="cep-events-content">
+        {% for block in event_blocks %}
+          {% assign city_handle = block.settings.city | handleize %}
+          <div
+            class="cep-event-card-wrap"
+            data-city="{{ city_handle }}"
+            data-date="{{ block.settings.date_iso }}"
+            data-age="{{ block.setings.age_range | handleize }}"
+            data-lgbtqia="{{ block.settings.is_lgbtqia }}"
+            data-specialty="{{ block.settings.is_specialty }}"
+            data-speed-dating="{{ block.settings.is_speed_dating }}"
+            data-tickets="{{ block.settings.has_tickets }}"
+            data-price="{{ block.settings.ticket_price }}"
+            data-time="{{ block.settings.event_time | handleize }}"
+            {{ block.shopify_attributes }}
+          >
+            {% if block.settings.city_label != blank %}
+              <div class="cep-event-city-heading">{{ block.settings.city_label }}</div>
+            {% endif %}
+
+            <article class="cep-event-card{% if block.settings.highlight_card %} cep-event-card--highlight{% endif %}">
+              <div class="cep-event-card__media">
+                {% if block.settings.image != blank %}
+                  {{
+                    block.settings.image
+                    | image_url: width: 900
+                    | image_tag:
+                      class: 'cep-event-card__image',
+                      loading: 'lazy',
+                      widths: '320, 480, 640, 900',
+                      sizes: '(min-width: 990px) 240px, 46vw',
+                      alt: block.settings.title | escape
+                  }}
+                {% else %}
+                  <div class="cep-event-card__placeholder">
+                    <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                      <path d="M10 38h28a2 2 0 002-2V12a2 2 0 00-2-2H10a2 2 0 00-2 2v24a2 2 0 002 2zm4-6l6-8 5 6 4-5 5 7H14zM16 20a3 3 0 100-6 3 3 0 000 6z" fill="currentColor"/>
+                    </svg>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.tag_text != blank %}
+                  <span class="cep-event-card__tag">{{ block.settings.tag_text }}</span>
+                {% endif %}
+              </div>
+
+              <div class="cep-event-card__body">
+                {% if block.settings.date_text != blank %}
+                  <div class="cep-event-card__meta cep-event-card__meta--date">{{ block.settings.date_text }}</div>
+                {% endif %}
+
+                {% if block.settings.title != blank %}
+                  <h3 class="cep-event-card__title">{{ block.settings.title }}</h3>
+                {% endif %}
+
+                {% if block.settings.detail_text != blank %}
+                  <div class="cep-event-card__meta">{{ block.settings.detail_text }}</div>
+                {% endif %}
+
+                {% if block.settings.location_text != blank %}
+                  <div class="cep-event-card__meta">{{ block.settings.location_text }}</div>
+                {% endif %}
+
+                {% if block.settings.button_label != blank %}
+                  {% if block.settings.button_link != blank %}
+                    <a href="{{ block.settings.button_link }}" class="cep-event-card__button">{{ block.settings.button_label }}</a>
+                  {% else %}
+                    <span class="cep-event-card__button">{{ block.settings.button_label }}</span>
+                  {% endif %}
+                {% endif %}
+              </div>
+            </article>
+          </div>
+        {% endfor %}
+
+        {% if event_blocks.size == 0 %}
+          <div class="cep-events-placeholder">
+            <p class="cep-events-placeholder__text">{{ section.settings.empty_state_text }}</p>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_back_to_top %}
+      <div class="cep-back-to-top-wrap">
+        <a href="#{{ section_id }}" class="cep-back-to-top" aria-label="Back to top">
+          <span class="cep-back-to-top__icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 18V6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M7.5 10.5L12 6l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="cep-back-to-top__text">{{ section.settings.back_to_top_text }}</span>
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
+  <style>
+    #{{ section_id }} {
+      --cep-bg: {{ section.settings.section_bg }};
+      --cep-title: {{ section.settings.heading_color }};
+      --cep-pill-bg: {{ section.settings.city_bg }};
+      --cep-pill-text: {{ section.settings.city_text }};
+      --cep-pill-hover: {{ section.settings.city_bg_hover }};
+      --cep-pill-hover-border: {{ section.settings.city_hover_border }};
+      --cep-pill-hover-shadow: {{ section.settings.city_hover_shadow }};
+      --cep-city-image-overlay: {{ section.settings.city_image_overlay | divided_by: 100.0 }};
+      --cep-sortby-bg: {{ section.settings.sortby_bg }};
+      --cep-sortby-text: {{ section.settings.sortby_text }};
+      --cep-filter-bg: {{ section.settings.filter_bg }};
+      --cep-filter-text: {{ section.settings.filter_text }};
+      --cep-card-bg: {{ section.settings.card_bg }};
+      --cep-card-text: {{ section.settings.card_text }};
+      --cep-card-accent: {{ section.settings.card_accent }};
+      --cep-card-glow: {{ section.settings.card_glow }};
+      --cep-back-color: {{ section.settings.back_to_top_color }};
+      background: var(--cep-bg);
+      color: var(--cep-title);
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #{{ section_id }} .cep-events-section__inner {
+      max-width: {{ section.settings.max_width }}px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* -- Floating gold particles -- */
+    #{{ section_id }} .cep-floating-particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    #{{ section_id }} .cep-particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: rgba(212, 175, 55, 0.8);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      animation: cepFloat 8s linear infinite;
+      transform: translateY(100%) scale(0);
+      opacity: 0;
+      font-size: 0;
+      line-height: 0;
+    }
+
+    #{{ section_id }} .cep-particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 7s; }
+    #{{ section_id }} .cep-particle:nth-child(2) { left: 20%; animation-delay: 1s; animation-duration: 8s; }
+    #{{ section_id }} .cep-particle:nth-child(3) { left: 30%; animation-delay: 2s; animation-duration: 9s; }
+    #{{ section_id }} .cep-particle:nth-child(4) { left: 40%; animation-delay: 3s; animation-duration: 7.5s; }
+    #{{ section_id }} .cep-particle:nth-child(5) { left: 50%; animation-delay: 4s; animation-duration: 8.5s; }
+    #{{ section_id }} .cep-particle:nth-child(6) { left: 60%; animation-delay: 5s; animation-duration: 9.5s; }
+    #{{ section_id }} .cep-particle:nth-child(7) { left: 70%; animation-delay: 1.5s; animation-duration: 8s; }
+    #{{ section_id }} .cep-particle:nth-child(8) { left: 80%; animation-delay: 2.5s; animation-duration: 7.5s; }
+    #{{ section_id }} .cep-particle:nth-child(9) { left: 90%; animation-delay: 3.5s; animation-duration: 9s; }
+
+    @keyframes cepFloat {
+      0% {
+        transform: translateY(100vh) translateX(0) scale(0);
+        opacity: 0;
+      }
+      5% {
+        opacity: 1;
+        transform: translateY(95vh) translateX(10px) scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(50vh) translateX(-20px) scale(1);
+      }
+      95% {
+        opacity: 1;
+        transform: translateY(5vh) translateX(15px) scale(1);
+      }
+      100% {
+        transform: translateY(0) translateX(0) scale(0);
+        opacity: 0;
+      }
+    }
+
+    #{{ section_id }} .cep-events-section__header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 14px 24px;
+      margin-bottom: 18px;
+    }
+
+    #{{ section_id }} .cep-events-section__title {
+      margin: 0;
+      text-align: center;
+      color: var(--cep-title);
+      font-size: clamp(20px, 2vw, 30px);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      justify-self: center;
+      grid-column: 1 / -1;
+      line-height: 1.1;
+    }
+
+    #{{ section_id }} .cep-events-section__header-left {
+      justify-self: start;
+      margin-top: -2px;
+    }
+
+    #{{ section_id }} .cep-events-section__header-right {
+      justify-self: end;
+      margin-top: -2px;
+    }
+
+    #{{ section_id }} .cep-events-sortby {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--cep-sortby-bg);
+      color: var(--cep-sortby-text);
+      font-size: 12px;
+      line-height: 1;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset;
+    }
+
+    #{{section_id }} .cep-events-sortby__select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--cep-sortby-text);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    #{{ section_id }} .cep-events-sortby__label {
+      opacity: 0.8;
+      font-weight: 500;
+    }
+
+    #{{ section_id }} .cep-events-sortby__select {
+      font-weight: 700;
+    }
+
+    #{{ section_id }} .cep-events-sortby__icon {
+      width: 14px;
+      height: 14px;
+      flex: 0 0 14px;
+    }
+
+    #{{ section_id }} .cep-events-filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--cep-filter-bg);
+      color: var(--cep-filter-text);
+      font-size: 12px;
+      line-height: 1;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset;
+    }
+
+    #{{ section_id }} .cep-events-filter__label {
+      opacity: 0.8;
+      font-weight: 500;
+    }
+
+    #{{ section_id }} .cep-events-filter__value {
+      font-weight: 700;
+    }
+
+    #{{ section_id }} .cep-events-filter__select {
+      font-weight: 700;
+    }
+
+    #{{ section_id }} .cep-events-filter__icon {
+      width: 14px;
+      height: 14px;
+      flex: 0 0 14px;
+    }
+
+    #{{ section_id }} .cep-city-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    #{{ section_id }} .cep-city-grid__item {
+      min-width: 0;
+      overflow: visible;
+    }
+
+    #{{ section_id }} .cep-city-pill {
+      width: 100%;
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 10px;
+      background: var(--cep-pill-bg);
+      color: var(--cep-pill-text);
+      text-decoration: none;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.1;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 4px 12px rgba(0,0,0,0.25);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+      transform: translateY(0) scale(1);
+      transform-origin: center center;
+      will-change: transform;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 1;
+    }
+
+    #{{ section_id }} .cep-city-pill::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: var(--cep-city-image);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transform: scale(1);
+      transition: transform 0.3s ease;
+      z-index: 0;
+      opacity: 0;
+    }
+
+    #{{ section_id }} .cep-city-pill::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, calc(var(--cep-city-image-overlay) * 0.7)) 0%,
+        rgba(0, 0, 0, var(--cep-city-image-overlay)) 100%
+      );
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    #{{ section_id }} .cep-city-pill--has-image {
+      color: #ffffff;
+      background: #121212;
+      border-color: rgba(255,255,255,0.14);
+    }
+
+    #{{ section_id }} .cep-city-pill--has-image::before,
+    #{{ section_id }} .cep-city-pill--has-image::after {
+      opacity: 1;
+    }
+
+    #{{ section_id }} .cep-city-pill:hover,
+    #{{ section_id }} .cep-city-pill:focus-visible {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4), 0 8px 30px rgba(212, 175, 55, 0.3), 0 0 10px rgba(212, 175, 55, 0.2);
+      border: 1px solid #d4af37;
+      background: var(--cep-pill-hover);
+      outline: none;
+      z-index: 2;
+    }
+
+    #{{ section_id }} .cep-city-pill--has-image:hover,
+    #{{ section_id }} .cep-city-pill--has-image:focus-visible {
+      background: #121212;
+    }
+
+    #{{ section_id }} .cep-city-pill:hover::before,
+    #{{ section_id }} .cep-city-pill:focus-visible::before {
+      transform: scale(1.05);
+    }
+
+    #{{ section_id }} .cep-city-pill__icon,
+    #{{ section_id }} .cep-city-pill__text {
+      position: relative;
+      z-index: 2;
+    }
+
+    #{{ section_id }} .cep-city-pill__icon {
+      width: 14px;
+      height: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: currentColor;
+      flex: 0 0 14px;
+    }
+
+    #{{ section_id }} .cep-city-pill__icon svg {
+      width: 14px;
+      height: 14px;
+      display: block;
+    }
+
+    #{{ section_id }} .cep-city-pill__text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #{{ section_id }} .cep-events-content {
+      display: grid;
+      grid-template-columns: repeat({{ section.settings.event_columns_desktop }}, minmax(0, 1fr));
+      gap: 28px 22px;
+      align-items: start;
+    }
+
+    #{{ section_id }} .cep-event-card-wrap {
+      min-width: 0;
+    }
+
+    #{{ section_id }} .cep-event-city-heading {
+      margin: 0 0 10px;
+      color: {{ section.settings.city_heading_color }};
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    #{{ section_id }} .cep-event-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0;
+      background: var(--cep-card-bg);
+      color: var(--cep-card-text);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.05) inset;
+      max-width: 240px;
+      margin: 0 auto;
+    }
+
+    #{{ section_id }} .cep-event-card--highlight {
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.08) inset,
+        0 0 20px var(--cep-card-glow),
+        0 0 34px rgba(201, 165, 59, 0.24);
+    }
+
+    #{{ section_id }} .cep-event-card__media {
+      position: relative;
+      aspect-ratio: 0.76 / 1;
+      background: #1b1b1b;
+      overflow: hidden;
+    }
+
+    #{{ section_id }} .cep-event-card__image,
+    #{{ section_id }} .cep-event-card__placeholder {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    #{{ section_id }} .cep-event-card__placeholder {
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+        #151515;
+      color: rgba(255,255,255,0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #{{ section_id }} .cep-event-card__placeholder svg {
+      width: 44px;
+      height: 44px;
+      display: block;
+    }
+
+    #{{ section_id }} .cep-event-card__tag {
+      position: absolute;
+      top: 9px;
+      right: 9px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #0d0d0d;
+      color: #efe3a4;
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    #{{ section_id }} .cep-event-card__body {
+      padding: 12px 12px 14px;
+      text-align: center;
+    }
+
+    #{{ section_id }} .cep-event-card__meta {
+      color: rgba(255,255,255,0.76);
+      font-size: 11px;
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+
+    #{{ section_id }} .cep-event-card__meta--date {
+      color: var(--cep-card-accent);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    #{{ section_id }} .cep-event-card__title {
+      margin: 0 0 8px;
+      color: #ffffff;
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
+    #{{ section_id }} .cep-event-card__button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 96px;
+      min-height: 28px;
+      margin-top: 6px;
+      padding: 7px 12px;
+      border-radius: 3px;
+      background: var(--cep-card-accent);
+      color: #111111;
+      text-decoration: none;
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    #{{ section_id }} .cep-events-placeholder {
+      grid-column: 1 / -1;
+      padding: 34px 16px;
+      text-align: center;
+      border-radius: 10px;
+      border: 1px dashed rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.02);
+    }
+
+    #{{ section_id }} .cep-events-placeholder__text {
+      margin: 0;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    #{{ section_id }} .cep-back-to-top-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 26px;
+    }
+
+    #{{ section_id }} .cep-back-to-top {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--cep-back-color);
+      text-decoration: none;
+      font-size: 11px;
+      line-height: 1.1;
+      opacity: 0.9;
+    }
+
+    #{{ section_id }} .cep-back-to-top__icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.22);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.04);
+    }
+
+    #{{ section_id }} .cep-back-to-top__icon svg {
+      width: 14px;
+      height: 14px;
+      display: block;
+    }
+
+    #{{ section_id }} .cep-back-to-top__text {
+      white-space: nowrap;
+    }
+
+    @media screen and (max-width: 989px) {
+      #{{ section_id }} {
+        padding-top: {{ section.settings.padding_top_mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      }
+
+      #{{ section_id }} .cep-events-section__inner {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      #{{ section_id }} .cep-events-section__header {
+        grid-template-columns: 1fr;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      #{{ section_id }} .cep-events-section__title {
+        font-size: 18px;
+      }
+
+      #{{ section_id }} .cep-events-section__header-left {
+        justify-self: start;
+      }
+
+      #{{ section_id }} .cep-events-section__header-right {
+        justify-self: end;
+      }
+
+      #{{ section_id }} .cep-events-sortby {
+        min-height: 30px;
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+
+      #{{ section_id }} .cep-events-filter {
+        min-height: 30px;
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+
+      #{{ section_id }} .cep-city-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 22px;
+      }
+
+      #{{ section_id }} .cep-city-pill {
+        min-height: 46px;
+        font-size: 12px;
+        border-radius: 8px;
+        padding: 8px 10px;
+      }
+
+      #{{ section_id }} .cep-city-pill:hover,
+      #{{ section_id }} .cep-city-pill:focus-visible {
+        transform: translateY(-1px) scale(1.03);
+      }
+
+      #{{ section_id }} .cep-events-content {
+        grid-template-columns: repeat({{ section.settings.event_columns_mobile }}, minmax(0, 1fr));
+        gap: 18px 14px;
+      }
+
+      #{{ section_id }} .cep-event-card {
+        max-width: 100%;
+      }
+
+      #{{ section_id }} .cep-event-card__title {
+        font-size: 15px;
+      }
+
+      #{{ section_id }} .cep-event-card__meta {
+        font-size: 10px;
+      }
+
+      #{{ section_id }} .cep-back-to-top-wrap {
+        margin-top: 18px;
+      }
+
+      #{{ section_id }} .cep-back-to-top {
+        font-size: 10px;
+      }
+
+      #{{ section_id }} .cep-back-to-top__icon {
+        width: 22px;
+        height: 22px;
+      }
+    }
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "CEP All Events",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "ALL EVENTS"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sortby_placeholder",
+      "label": "Show sort by placeholder",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filter_placeholder",
+      "label": "Show filter placeholder",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sortby_label",
+      "label": "Sort-By label",
+      "default": "Sort By"
+    },
+    {
+      "type": "text",
+      "id": "date_iso",
+      "label": "Date (YYYY-MM-DD)",
+      "info": "Used for sorting. Format: 2026-04-12"
+    },
+    {
+      "type": "text",
+      "id": "filter_label",
+      "label": "Filter label",
+      "default": "Filter"
+    },
+    {
+      "type": "text",
+      "id": "filter_value",
+      "label": "Filter value",
+      "default": "City"
+    },
+    {
+      "type": "text",
+      "id": "city",
+      "label": "City",
+      "info": "e.g. Toronto"
+    },
+    {
+      "type": "text",
+      "id": "age_range",
+      "label": "Age Range",
+      "info": "e.g., 23-47"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_lgbtqia",
+      "label": "LGBTQIA+",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "is_specialty",
+      "label": "Specialty Events",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "is_speed_dating",
+      "label": "Speed Dating",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "has_tickets",
+      "label": "Tickets Available",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "event_time",
+      "label": "Time",
+      "info": "e.g., 7:00 PM"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_city_icon",
+      "label": "Show city pin icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_event_area",
+      "label": "Show event card area",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "empty_state_text",
+      "label": "Empty state text",
+      "default": "Event cards can be added here later from the Shopify editor."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_back_to_top",
+      "label": "Show back to top",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "back_to_top_text",
+      "label": "Back to top text",
+      "default": "Back To Top"
+    },
+    {
+      "type": "range",
+      "id": "event_columns_desktop",
+      "label": "Event columns desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "event_columns_mobile",
+      "label": "Event columns mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Section max width",
+      "min": 900,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1180
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Section background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "city_bg",
+      "label": "City button background",
+      "default": "#caa43b"
+    },
+    {
+      "type": "color",
+      "id": "city_bg_hover",
+      "label": "City button hover background",
+      "default": "#d8b34a"
+    },
+    {
+      "type": "color",
+      "id": "city_text",
+      "label": "City button text",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "city_hover_border",
+      "label": "City hover border",
+      "default": "#d4af37"
+    },
+    {
+      "type": "text",
+      "id": "city_hover_shadow",
+      "label": "City hover glow",
+      "default": "rgba(212, 175, 55, 0.3)"
+    },
+    {
+      "type": "range",
+      "id": "city_image_overlay",
+      "label": "City image overlay",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 35,
+      "unit": "%"
+    },
+    {
+      "type": "color",
+      "id": "sortby_bg",
+      "label": "Sort-By background",
+      "default": "#caa43b"
+    },
+    {
+      "type": "color",
+      "id": "sortby_text",
+      "label": "Sort-By text",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "filter_bg",
+      "label": "Filter background",
+      "default": "#caa43b"
+    },
+    {
+      "type": "color",
+      "id": "filter_text",
+      "label": "Filter text",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "city_heading_color",
+      "label": "Event city heading color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Event card background",
+      "default": "#101010"
+    },
+    {
+      "type": "color",
+      "id": "card_text",
+      "label": "Event card text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_accent",
+      "label": "Event card accent",
+      "default": "#caa43b"
+    },
+    {
+      "type": "color",
+      "id": "card_glow",
+      "label": "Event card glow",
+      "default": "#caa43b"
+    },
+    {
+      "type": "color",
+      "id": "back_to_top_color",
+      "label": "Back to top color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Desktop top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Desktop bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Mobile top padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Mobile bottom padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "city",
+      "name": "City button",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "city_name",
+          "label": "City name",
+          "default": "Toronto"
+        },
+        {
+          "type": "image_picker",
+          "id": "city_image",
+          "label": "City background image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "City link"
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "name": "Event card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "city",
+          "label": "City filter value",
+          "default": "Toronto"
+        },
+        {
+          "type": "text",
+          "id": "city_label",
+          "label": "City heading above card",
+          "default": "Toronto"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Event image"
+        },
+        {
+          "type": "text",
+          "id": "tag_text",
+          "label": "Top tag",
+          "default": "Popular"
+        },
+        {
+          "type": "text",
+          "id": "date_text",
+          "label": "Date text",
+          "default": "Mon, April 1 - 7:00 PM"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Event title",
+          "default": "Straight Speed Dating"
+        },
+        {
+          "type": "text",
+          "id": "detail_text",
+          "label": "Detail text",
+          "default": "Ages 25-35"
+        },
+        {
+          "type": "text",
+          "id": "location_text",
+          "label": "Location text",
+          "default": "Downtown Venue"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Book Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight_card",
+          "label": "Highlight card",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "CEP All Events",
+      "blocks": [
+        {
+          "type": "city",
+          "settings": {
+            "city_name": "Toronto"
+          }
+        },
+        {
+          "type": "city",
+          "settings": {
+            "city_name": "Ottawa"
+          }
+        },
+        {
+          "type": "city",
+          "settings": {
+            "city_name": "Quebec City"
+          }
+        },
+        {
+          "type": "city",
+          "settings": {
+            "city_name": "Montreal"
+          }
+        },
+        {
+          "type": "city",
+          "settings": {
+            "city_name": "Vancouver"
+          }
+        },
+        {
+          "type": "city",
+          "settings": {
+            "city_name": "Edmonton"
+          }
+        },
+        {
+          "type": "city",
+          "settings": {
+            "city_name": "Winnipeg"
+          }
+        },
+        {
+          "type": "city",
+          "settings": {
+            "city_name": "Calgary"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
