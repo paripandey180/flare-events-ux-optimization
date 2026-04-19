@@ -1,0 +1,148 @@
+{% comment %} Added by Vamika {% endcomment %}
+ 
+{{ 'section-cep-info-custom.css' | asset_url | stylesheet_tag }}
+
+<section class="city-about">
+  <div class="page-width about-wrapper">
+
+    <div class="about-header">
+      <h2>{{ section.settings.about_heading }}</h2>
+      <p>{{ section.settings.about_text_1 }}</p>
+      <p>{{ section.settings.about_text_2 }}</p>
+    </div>
+
+    <div class="about-cards">
+      <div class="about-card">
+        {% if section.settings.card_1_icon %}
+          {{ section.settings.card_1_icon | image_url: width: 100 | image_tag: alt: section.settings.card_1_title }}
+        {% endif %}
+        <h3>{{ section.settings.card_1_title }}</h3>
+        <p>{{ section.settings.card_1_text }}</p>
+      </div>
+
+      <div class="about-card">
+        {% if section.settings.card_2_icon %}
+          {{ section.settings.card_2_icon | image_url: width: 100 | image_tag: alt: section.settings.card_2_title }}
+        {% endif %}
+        <h3>{{ section.settings.card_2_title }}</h3>
+        <p>{{ section.settings.card_2_text }}</p>
+      </div>
+
+      <div class="about-card">
+        {% if section.settings.card_3_icon %}
+          {{ section.settings.card_3_icon | image_url: width: 100 | image_tag: alt: section.settings.card_3_title }}
+        {% endif %}
+        <h3>{{ section.settings.card_3_title }}</h3>
+        <p>{{ section.settings.card_3_text }}</p>
+      </div>
+
+      <div class="about-card">
+        {% if section.settings.card_4_icon %}
+          {{ section.settings.card_4_icon | image_url: width: 100 | image_tag: alt: section.settings.card_4_title }}
+        {% endif %}
+        <h3>{{ section.settings.card_4_title }}</h3>
+        <p>{{ section.settings.card_4_text }}</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Why Singles Choose Us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "about_heading",
+      "label": "About Heading",
+      "default": "Why Choose Flare?"
+    },
+    {
+      "type": "textarea",
+      "id": "about_text_1",
+      "label": "About Text Line 1",
+      "default": "At Flare, we’re reinventing speed dating. Our events aren’t about rushing through awkward conversations—they’re about creating memorable experiences, meeting great people, and enjoying a night that actually feels fun."
+    },
+    {
+      "type": "textarea",
+      "id": "about_text_2",
+      "label": "About Text Line 2",
+      "default": "We design every event to be energetic, exciting, and one-of-a-kind. From curated icebreakers to thoughtfully selected venues, we make it easy to connect in a comfortable, welcoming environment."
+    },
+    {
+      "type": "image_picker",
+      "id": "card_1_icon",
+      "label": "Card 1 Icon"
+    },
+    {
+      "type": "text",
+      "id": "card_1_title",
+      "label": "Card 1 Title",
+      "default": "Unique One-Night Experiences"
+    },
+    {
+      "type": "textarea",
+      "id": "card_1_text",
+      "label": "Card 1 Text",
+      "default": "No two events are ever the same"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_2_icon",
+      "label": "Card 2 Icon"
+    },
+    {
+      "type": "text",
+      "id": "card_2_title",
+      "label": "Card 2 Title",
+      "default": "Curated Venues"
+    },
+    {
+      "type": "textarea",
+      "id": "card_2_text",
+      "label": "Card 2 Text",
+      "default": "Hosted at the best bars, lounges, and local gems"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_3_icon",
+      "label": "Card 3 Icon"
+    },
+    {
+      "type": "text",
+      "id": "card_3_title",
+      "label": "Card 3 Title",
+      "default": "Inclusive + Welcoming"
+    },
+    {
+      "type": "textarea",
+      "id": "card_3_text",
+      "label": "Card 3 Text",
+      "default": "Safe, comfortable spaces for all singles"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_4_icon",
+      "label": "Card 4 Icon"
+    },
+    {
+      "type": "text",
+      "id": "card_4_title",
+      "label": "Card 4 Title",
+      "default": "Competitive Pricing"
+    },
+    {
+      "type": "textarea",
+      "id": "card_4_text",
+      "label": "Card 4 Text",
+      "default": "Great experiences without breaking your budget"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why Singles Choose Us"
+    }
+  ]
+}
+{% endschema %}
