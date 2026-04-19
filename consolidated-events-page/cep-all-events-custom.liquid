@@ -45,8 +45,81 @@
               <path d="M5 7.5L10 12.5L15 7.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
+
           <div class="cep-filter-panel" id="cep-filter-panel" hidden>
             <div class="cep-filter-panel__inner">
+
+              <div class="cep-filter-group">
+                <div class="cep-filter-group__title">City</div>
+                <div class="cep-filter-group__children">
+                  {% assign cities = "Toronto, Ottawa, Quebec City, Montreal, Vancouver, Edmonton, Winnipeg, Calgary" | split: "," %}
+                  {% for city in cities %}
+                    <label class="cep-filter option cep-filter-option--child">
+                      <input type="checkbox" class="cep-filter-check" data-filter="city" data-value="{{ city | handleize }}">
+                      <span>{{ city }}</span>
+                    </label>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="cep-filter-group">
+                <div class="cep-filter-group__title">Age</div>
+                <div class="cep-filter-group__children">
+                  {% if all_ages.size > 0 %}
+                    {% for age in all_ages %}
+                      {% if age != blank %}
+                        <label class="cep-filter option cep-filter-option--child">
+                          <input type="checkbox" class="cep-filter-check" data-filter="age" data-value="{{ age | handleize }}">
+                            <span>{{ age }}</span>
+                        </label>
+                      {% endif %}
+                    {% endfor %}
+                  {% else %}
+                    <span class="cep-filter-empty">No age ranges added yet</span>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="cep-filter-group">
+                <div class="cep-filter-group__title">Type</div>
+                <label class="cep-filter-option">
+                  <input type="checkbox" class="cep-filter-check" data-filter="lgbtqia" data-value="true">
+                  <span>LGBTQIA+</span>
+                </label>
+                <label class="cep-filter-option">
+                  <input type="checkbox" class="cep-filter-check" data-filter="specialty" data-value="true">
+                  <span>Specialty Events/span>
+                </label>
+                <label class="cep-filter-option">
+                  <input type="checkbox" class="cep-filter-check" data-filter="speed-dating" data-value="true">
+                  <span>Speed Dating</span>
+                </label>
+                <label class="cep-filter-option">
+                  <input type="checkbox" class="cep-filter-check" data-filter="tickets" data-value="true">
+                  <span>Tickets Available</span>
+                </label>
+              </div>
+              
+              <div class="cep-filter-group">
+                <div class="cep-filter-group__title">Time</div>
+                <div class="cep-filter-group__children">
+                  {% if all_times.size > 0 %}
+                    {% for time in all_times %}
+                      {% if time != blank %}
+                        <label class="cep-filter option cep-filter-option--child">
+                          <input type="checkbox" class="cep-filter-check" data-filter="time" data-value="{{ time | handleize }}">
+                            <span>{{ time }}</span>
+                        </label>
+                      {% endif %}
+                    {% endfor %}
+                  {% else %}
+                    <span class="cep-filter-empty">No times added yet</span>
+                  {% endif %}
+                </div>
+              </div>
+
+              <button class="cep-filter-clear" id="cep-filter-clear">Clear All</button>
+
             </div>
           </div>
         {% endif %}
@@ -130,7 +203,6 @@
             data-specialty="{{ block.settings.is_specialty }}"
             data-speed-dating="{{ block.settings.is_speed_dating }}"
             data-tickets="{{ block.settings.has_tickets }}"
-            data-price="{{ block.settings.ticket_price }}"
             data-time="{{ block.settings.event_time | handleize }}"
             {{ block.shopify_attributes }}
           >
@@ -337,6 +409,7 @@
     #{{ section_id }} .cep-events-section__header-right {
       justify-self: end;
       margin-top: -2px;
+      position: relative;
     }
 
     #{{ section_id }} .cep-events-sortby {
@@ -394,6 +467,101 @@
       font-size: 12px;
       line-height: 1;
       box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #{{ section_id }} .cep-filter-panel {
+      position: absolute;
+      z-index: 100;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 220px;
+      background: var(--cep-filter-bg);
+      color: var(--cep-filter-text);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      padding: 10px 12px;
+    }
+
+    #{{ section_id }} .cep-filter-panel[hidden] {
+      display: none;
+    }
+
+    #{{ section_id }} .cep-filter-group {
+      margin-bottom: 8px;
+    }
+
+    #{{ section_id }} .cep-filter-group__title {
+      font-size: 10 px;
+      font-weight: 700;
+      opacity: 0.6;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 3px;
+    }
+
+    #{{ section_id }} .cep-filter-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 0;
+      cursor: pointer;
+    }
+
+    #{{ section_id }} .cep-filter-option-child {
+      padding-left: 8px;
+    }
+
+    #{{ section_id }} .cep-filter-empty {
+      display: block;
+      padding-left: 8px;
+      font-size: 10px;
+      opacity: 0.5;
+      font-style: italic;
+    }
+
+    #{{ section_id }} .cep-filter-group .cep-filter-option {
+      padding-left: 8px;
+    }
+
+    #{{ section_id }} .cep-filter-option input {
+      accent-color: var(--cep-filter-text);
+      width: 12px;
+      height: 12px;
+      cursor: pointer;
+    }
+
+    #{{ section_id }} .cep-filter-center {
+      width: 100%;
+      margin-top: 4px;
+      padding: 7px 0;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 6px;
+      color: var(--cep-filter-text);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #{{ section_id }} .cep-filter-clear {
+      width: 100%;
+      margin-top: 4px;
+      padding: 5px 0;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 6px;
+      color: var(--cep-filter-text);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #{{ section_id }} .cep-filter-clear:hover {
+      background: rgba(255, 255, 255, 0.18);
     }
 
     #{{ section_id }} .cep-events-filter__label {
@@ -825,6 +993,108 @@
   </style>
 </section>
 
+<script>
+(function () {
+  const select = document.getElementById("cep-sort-select");
+  if (!select) return;
+
+  const container = document.querySelector(".cep-events-content");
+  if (!container) return;
+
+  const toggle = document.getElementById("cep-filter-toggle");
+  const panel = document.getElementById("cep-filter-panel");
+  const clearBtn = document.getElementById("cep-filter-clear");
+  const summary = document.getElementById("cep-filter-summary");
+  const cards = document.getElementById("cep-event-card-wrap");
+
+  if (!toggle || !panel) return;
+
+  toggle.addEventListener("click", function () {
+    if (panel.hasAttribute("hidden")) {
+      panel.removeAttribute("hidden");
+
+    }
+    else {
+      panel.setAttribute("hidden", "");
+    }
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!toggle.contains(e.target) && !panel.contains(e.target)) {
+      panel.setAttribute("hidden", "");
+    }
+  });
+
+  function sortCards(order) {
+    const cards = Array.from(container.querySelectorAll(".cep-event-card-wrap"));
+
+    cards.sort(function (a, b) {
+      const dateA = new Date(a.dataset.date || "2000-01-01");
+      const dateB = new Date(b.dataset.date || "2000-01-01");
+
+      return order === "soonest" ? dateA - dateB : dateB - dateA;
+    });
+
+    cards.forEach(function (card) {
+      container.appendChild(card);
+
+    });
+  }
+
+  sortCards("latest");
+
+  select.addEventListener("change", function() {
+    sortCards(this.value);
+  });
+
+  function getActiveFilters() {
+    const filters = {};
+    panel.querySelectorAll(".cep-filter-check:checked").forEach(function (cb) {
+      const key = cb.dataset.filter;
+      if (!filters[key]) filters[key] = [];
+      filters[key].push(cb.dataset.value);
+    });
+
+    return filters;
+  }
+
+  function applyFilters() {
+    const filters = getActiveFilters();
+    const keys = Object.keys(filters);
+
+    cards.forEach(function (card) {
+      if (keys.length === 0) {
+        card.style.display = "";
+
+        return;
+      }
+
+      const match = keys.every(function (key) {
+        const cardVal = card.dataset[key] || "";
+        return filters[key].some(function (val) {
+          return cardVal === val;
+        });
+      });
+      
+      card.style.display = match ? "" : "none";
+    });
+
+    const totalChecked = panel.querySelectorAll(".cep-filter-check:checked").length;
+    summary.textContent = totalChecked === 0 ? "All" : totalChecked + " selected";
+  }
+
+  panel.addEventListener("change", applyFilters);
+
+  clearBtn.addEventListener("click", function () {
+    panel.querySelectorAll(".cep-filter-check").forEach(function (cb) {
+      cb.checked = false;
+    });
+
+    applyFilters();
+  });
+})();
+</script>
+
 {% schema %}
 {
   "name": "CEP All Events",
@@ -866,12 +1136,6 @@
       "id": "filter_label",
       "label": "Filter label",
       "default": "Filter"
-    },
-    {
-      "type": "text",
-      "id": "filter_value",
-      "label": "Filter value",
-      "default": "City"
     },
     {
       "type": "text",
