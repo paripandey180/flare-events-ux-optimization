@@ -95,9 +95,9 @@
         {{ section.settings.desc | default: 'We bring singles together through curated events and personalized matchmaking that spark genuine chemistry, no swiping required.' }}
       </p>
 
-      <a href="{{ section.settings.cta_url | default: '#' }}" class="hp-hero-cta">
-        {{ section.settings.cta_text | default: 'Find Events Near You' }}
-      </a>
+      <a href="{{ section.settings.cta_url | default: '#events' }}" class="hp-hero-cta">
+  {{ section.settings.cta_text | default: 'Find Events Near You' }}
+</a>
 
       <div class="hp-hero-stats">
         <div class="stat-item">
@@ -118,25 +118,30 @@
     </div>
 
     <!-- RIGHT COLUMN: 2x2 Photo Grid -->
-    <div class="hp-hero-right" aria-hidden="true">
+<div class="hp-hero-right" aria-hidden="true">
       <div class="photo-grid">
         <div class="photo-cell photo-cell--tl">
-          <img src="https://cdn.shopify.com/s/files/1/0855/3709/5995/files/dating-coaching-toronto_2.jpg"
+          <img src="https://cdn.shopify.com/s/files/1/0855/3709/5995/files/redesigned_hero_section2.png?v=1776831638"
                alt="Couple enjoying a date" loading="lazy">
         </div>
         <div class="photo-cell photo-cell--tr">
-          <img src="https://cdn.shopify.com/s/files/1/0855/3709/5995/files/matchmaking-services_292935ac-1ce7-461a-b727-6cf726df046d.jpg"
+          <img src="https://cdn.shopify.com/s/files/1/0855/3709/5995/files/redesigned_hero_section.png?v=1776831617"
                alt="Romantic dinner" loading="lazy">
         </div>
         <div class="photo-cell photo-cell--bl">
-          <img src="https://cdn.shopify.com/s/files/1/0855/3709/5995/files/speed-dating-canada.jpg"
+          <img src="https://cdn.shopify.com/s/files/1/0855/3709/5995/files/redesigned_hero_section3.png?v=1776831647"
                alt="Speed dating event" loading="lazy">
         </div>
         <div class="photo-cell photo-cell--br">
-          <img src="https://cdn.shopify.com/s/files/1/0855/3709/5995/files/dating-coaching-toronto_2.jpg"
+          <img src="https://cdn.shopify.com/s/files/1/0855/3709/5995/files/redesigned_hero_section3.png?v=1776831647"
                alt="Happy couple" loading="lazy">
         </div>
       </div>
+    </div>
+
+    <!-- MEMBERSHIP LINK (centered across both columns) -->
+    <div class="hp-hero-membership">
+      <a href="/products/flare-events-daterbase-membership" class="membership-link">Membership</a>
     </div>
 
   </div>
@@ -161,6 +166,28 @@
     padding: 5rem 4rem 4rem;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
+  .hp-hero-membership {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+.membership-link {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding-bottom: 4px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.membership-link:hover {
+  color: #c9a227;
+  border-bottom-color: #c9a227;
+}
 
   .hero-bg-orb {
     position: absolute;
@@ -248,7 +275,7 @@
   }
 
   .stat-number {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     font-weight: 800;
     color: #ffffff;
     line-height: 1;
@@ -279,12 +306,12 @@
     gap: 0.75rem;
   }
 
-  .photo-cell {
-    border-radius: 14px;
-    overflow: hidden;
-    border: 2px solid rgba(201,162,39,0.25);
-    background: #1a1a1a;
-  }
+ .photo-cell {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid #c9a227;
+  background: #1a1a1a;
+}
 
   .photo-cell img {
     width: 100%;
@@ -316,4 +343,5 @@
     .hp-hero-stats { flex-wrap: wrap; gap: 1rem; }
     .stat-divider { display: none; }
   }
+  
 </style>
